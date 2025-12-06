@@ -1,0 +1,40 @@
+name: Build - Test - Benchmark
+
+on: [push, pull_request]
+
+jobs:
+  test-and-bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build cmake g++ libeigen3-dev libgflags-dev libgoogle-glog-dev     # add libtbb-dev, etc. if needed
+
+      - name: Configure (CMake)
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run unit tests
+        run: ctest --test-dir build --output-on-failure
+
+#      - name: Run benchmarks
+#        run: |
+#          ./build/benchmarks \
+#            --benchmark_out=bench.json \
+#            --benchmark_out_format=json \
+#            --benchmark_repetitions=8 \
+#            --benchmark_display_aggregates_only=true
+
+#      - name: Upload benchmark report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: benchmark-results
+#          path: bench.json
