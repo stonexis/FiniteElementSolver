@@ -1,0 +1,143 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 4.0
+
+      - name: Install CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.20
+        with:
+          cuda: '12.5.0'
+
+      - name: Install oneMKL and oneTBB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intel-oneapi-mkl-devel intel-oneapi-tbb-devel
+
+      - name: Configure (CMake)
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run unit tests
+        run: ctest --test-dir build --output-on-failure
+
+  asan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 4.0
+
+      - name: Install CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.20
+        with:
+          cuda: '12.5.0'
+
+      - name: Install oneMKL and oneTBB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intel-oneapi-mkl-devel intel-oneapi-tbb-devel
+
+      - name: Configure ASAN
+        run: |
+          cmake -S . -B build-asan -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON 
+
+      - name: Build
+        run: cmake --build build-asan --parallel
+
+      - name: Test ASan
+        env:
+          ASAN_OPTIONS: detect_leaks=1
+        run: |
+          cd build-asan
+          ctest --output-on-failure
+
+  ubsan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 4.0
+
+      - name: Install CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.20
+        with:
+          cuda: '12.5.0'
+
+      - name: Install oneMKL and oneTBB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intel-oneapi-mkl-devel intel-oneapi-tbb-devel
+
+      - name: Configure UBSAN
+        run: |
+          cmake -S . -B build-ubsan -DCMAKE_BUILD_TYPE=Debug -DENABLE_UBSAN=ON 
+
+      - name: Build
+        run: cmake --build build-ubsan --parallel
+
+      - name: Test UBSAN
+        run: |
+          cd build-ubsan
+          ctest --output-on-failure
+
+  tsan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 4.0
+
+      - name: Install CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.20
+        with:
+          cuda: '12.5.0'
+
+      - name: Install oneMKL and oneTBB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intel-oneapi-mkl-devel intel-oneapi-tbb-devel
+
+      - name: Configure TSAN
+        run: |
+          cmake -S . -B build-tsan -DCMAKE_BUILD_TYPE=Debug -DENABLE_TSAN=ON 
+
+      - name: Build
+        run: cmake --build build-tsan --parallel
+
+      - name: Test TSAN
+        run: |
+          cd build-tsan
+          ctest --output-on-failure

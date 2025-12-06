@@ -152,3 +152,36 @@ if (BUILD_GPU_BENCHMARKS)
     )
 
 endif()
+
+# --- Sanitizers ---
+
+option(ENABLE_TSAN "Enable ThreadSanitizer" OFF)
+option(ENABLE_ASAN  "Enable AddressSanitizer" OFF)
+option(ENABLE_UBSAN "Enable UndefinedBehaviorSanitizer" OFF)
+
+if (ENABLE_TSAN)
+    add_compile_options(-fsanitize=thread -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=thread)
+endif()
+
+if (ENABLE_ASAN)
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        message(FATAL_ERROR "Switch to debug")
+    endif()
+
+    add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address)
+
+endif()
+
+if (ENABLE_UBSAN)
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        message(FATAL_ERROR "Switch to debug")
+    endif()
+
+    add_compile_options(-fsanitize=undefined -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=undefined)
+
+endif()
