@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
 
     steps:
@@ -19,8 +19,9 @@ jobs:
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.29
         with:
-          cuda: '12.5.0'
-          linux-local-args: '["--toolkit"]'
+          cuda: '12.4.0'
+          method: 'network'
+          sub-packages: '["nvcc", "cudart"]'
 
       - name: Check nvcc
         run: |
@@ -41,7 +42,7 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
   asan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
 
     steps:
@@ -56,8 +57,9 @@ jobs:
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.29
         with:
-          cuda: '12.5.0'
-          linux-local-args: '["--toolkit"]'
+          cuda: '12.4.0'
+          method: 'network'
+          sub-packages: '["nvcc", "cudart"]'
 
       - name: Install oneMKL and oneTBB
         run: |
@@ -79,7 +81,7 @@ jobs:
           ctest --output-on-failure
 
   ubsan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
 
     steps:
@@ -94,8 +96,9 @@ jobs:
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.29
         with:
-          cuda: '12.5.0'
-          linux-local-args: '["--toolkit"]'
+          cuda: '12.4.0'
+          method: 'network'
+          sub-packages: '["nvcc", "cudart"]'
 
       - name: Install oneMKL and oneTBB
         run: |
@@ -115,7 +118,7 @@ jobs:
           ctest --output-on-failure
 
   tsan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 30
 
     steps:
@@ -130,8 +133,9 @@ jobs:
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.29
         with:
-          cuda: '12.5.0'
-          linux-local-args: '["--toolkit"]'
+          cuda: '12.4.0'
+          method: 'network'
+          sub-packages: '["nvcc", "cudart"]'
 
       - name: Install oneMKL and oneTBB
         run: |
