@@ -170,8 +170,8 @@ if (ENABLE_ASAN)
         message(FATAL_ERROR "Switch to debug")
     endif()
 
-    add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
-    add_link_options(-fsanitize=address)
+    add_compile_options(-fsanitize=address, leak -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=address, leak)
 
 endif()
 
