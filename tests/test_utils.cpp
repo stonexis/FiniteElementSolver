@@ -15,6 +15,13 @@ TEST(InterceptionTest, Vertical) {
             << "Got     : " << interception.x << " " << interception.y << "\n";
 }
 
+TEST(Sanitizer, san) {
+    double *p = new double[10];
+    EXPECT_TRUE(
+        true
+        );
+}
+
 TEST(InterceptionTest, SamePoint) {
     using p_type = grid::Point2D<double>;
     p_type true_interception(3, 6);
