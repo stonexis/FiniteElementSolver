@@ -90,8 +90,8 @@ jobs:
         run: |
           cmake -S . -B build-asan -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON 
 
-      - name: Build (ASan, verbose)
-        run: cmake --build build-asan --parallel -- -v
+      - name: Build
+        run: cmake --build build-asan --parallel
 
       - name: Run ASan
         env:
