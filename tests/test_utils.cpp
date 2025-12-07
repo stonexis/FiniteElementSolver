@@ -17,6 +17,7 @@ TEST(InterceptionTest, Vertical) {
 
 TEST(Sanitizer, san) {
     double *p = new double[10];
+    p[0] = 1.23;
     EXPECT_TRUE(
         true
         );

@@ -90,15 +90,15 @@ jobs:
         run: |
           cmake -S . -B build-asan -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON 
 
-      - name: Build
-        run: cmake --build build-asan --parallel
+      - name: Build (ASan, verbose)
+        run: cmake --build build-asan --parallel -- -v
 
-      - name: Test ASan
+      - name: Run ASan
         env:
-          ASAN_OPTIONS: detect_leaks=1
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
         run: |
           cd build-asan
-          ctest --output-on-failure
+          ./fem_tests --gtest_filter=Sanitizer.san
 
   ubsan:
     runs-on: ubuntu-22.04
@@ -142,10 +142,10 @@ jobs:
       - name: Build
         run: cmake --build build-ubsan --parallel
 
-      - name: Test UBSAN
+      - name: Run UBSAN
         run: |
           cd build-ubsan
-          ctest --output-on-failure
+          ./fem_tests --gtest_filter=Sanitizer.san
 
   tsan:
     runs-on: ubuntu-22.04
@@ -189,7 +189,7 @@ jobs:
       - name: Build
         run: cmake --build build-tsan --parallel
 
-      - name: Test TSAN
+      - name: Run TSAN
         run: |
           cd build-tsan
-          ctest --output-on-failure
+          ./fem_tests --gtest_filter=Sanitizer.san

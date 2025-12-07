@@ -160,8 +160,17 @@ option(ENABLE_ASAN  "Enable AddressSanitizer" OFF)
 option(ENABLE_UBSAN "Enable UndefinedBehaviorSanitizer" OFF)
 
 if (ENABLE_TSAN)
-    add_compile_options(-fsanitize=thread -fno-omit-frame-pointer)
-    add_link_options(-fsanitize=thread)
+    target_compile_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=thread
+            -fno-omit-frame-pointer
+    )
+    target_link_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=thread
+    )
 endif()
 
 if (ENABLE_ASAN)
@@ -170,8 +179,20 @@ if (ENABLE_ASAN)
         message(FATAL_ERROR "Switch to debug")
     endif()
 
-    add_compile_options(-fsanitize=address, leak -fno-omit-frame-pointer)
-    add_link_options(-fsanitize=address, leak)
+    target_compile_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=address
+            -fsanitize=leak
+            -fno-omit-frame-pointer
+    )
+    target_link_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=address
+            -fsanitize=leak
+    )
+
 
 endif()
 
@@ -180,8 +201,16 @@ if (ENABLE_UBSAN)
     if (CMAKE_BUILD_TYPE STREQUAL "Release")
         message(FATAL_ERROR "Switch to debug")
     endif()
-
-    add_compile_options(-fsanitize=undefined -fno-omit-frame-pointer)
-    add_link_options(-fsanitize=undefined)
+    target_compile_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=undefined
+            -fno-omit-frame-pointer
+    )
+    target_link_options(
+            fem_tests
+            PRIVATE
+            -fsanitize=undefined
+    )
 
 endif()
