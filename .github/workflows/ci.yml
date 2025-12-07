@@ -17,9 +17,14 @@ jobs:
           cmakeVersion: 4.0
 
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.20
+        uses: Jimver/cuda-toolkit@v0.2.29
         with:
           cuda: '12.5.0'
+          linux-local-args: '["--toolkit"]'
+
+      - name: Check nvcc
+        run: |
+          nvcc -V
 
       - name: Install oneMKL and oneTBB
         run: |
@@ -49,9 +54,10 @@ jobs:
           cmakeVersion: 4.0
 
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.20
+        uses: Jimver/cuda-toolkit@v0.2.29
         with:
           cuda: '12.5.0'
+          linux-local-args: '["--toolkit"]'
 
       - name: Install oneMKL and oneTBB
         run: |
@@ -86,9 +92,10 @@ jobs:
           cmakeVersion: 4.0
 
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.20
+        uses: Jimver/cuda-toolkit@v0.2.29
         with:
           cuda: '12.5.0'
+          linux-local-args: '["--toolkit"]'
 
       - name: Install oneMKL and oneTBB
         run: |
@@ -121,9 +128,10 @@ jobs:
           cmakeVersion: 4.0
 
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.20
+        uses: Jimver/cuda-toolkit@v0.2.29
         with:
           cuda: '12.5.0'
+          linux-local-args: '["--toolkit"]'
 
       - name: Install oneMKL and oneTBB
         run: |
