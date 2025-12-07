@@ -27,6 +27,16 @@ jobs:
         run: |
           nvcc -V
 
+      - name: Install oneAPI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl gpg
+          curl -fsSL https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+            | sudo gpg --dearmor -o /usr/share/keyrings/intel-oneapi-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/intel-oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" \
+            | sudo tee /etc/apt/sources.list.d/oneAPI.list
+          sudo apt-get update
+
       - name: Install oneMKL and oneTBB
         run: |
           sudo apt-get update
@@ -61,7 +71,7 @@ jobs:
           method: 'network'
           sub-packages: '["nvcc", "cudart"]'
 
-      - name: Add oneAPI
+      - name: Install oneAPI
         run: |
           sudo apt-get update
           sudo apt-get install -y curl gpg
@@ -110,7 +120,7 @@ jobs:
           method: 'network'
           sub-packages: '["nvcc", "cudart"]'
 
-      - name: Add oneAPI
+      - name: Install oneAPI
         run: |
           sudo apt-get update
           sudo apt-get install -y curl gpg
@@ -157,7 +167,7 @@ jobs:
           method: 'network'
           sub-packages: '["nvcc", "cudart"]'
 
-      - name: Add oneAPI
+      - name: Install oneAPI
         run: |
           sudo apt-get update
           sudo apt-get install -y curl gpg
