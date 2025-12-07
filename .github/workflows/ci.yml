@@ -97,8 +97,8 @@ jobs:
         env:
           ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
         run: | 
-          cd build-asan ctest 
-          --output-on-failure
+          cd build-asan 
+          ctest --output-on-failure
 
   ubsan:
     runs-on: ubuntu-22.04
@@ -144,8 +144,8 @@ jobs:
 
       - name: Run UBSAN
         run: |
-          cd build-ubsan ctest 
-          --output-on-failure
+          cd build-ubsan
+          ctest --output-on-failure
 
   tsan:
     runs-on: ubuntu-22.04
@@ -191,5 +191,5 @@ jobs:
 
       - name: Run TSAN
         run: |
-          cd build-tsan ctest 
-          --output-on-failure
+          cd build-tsan 
+          ctest --output-on-failure
