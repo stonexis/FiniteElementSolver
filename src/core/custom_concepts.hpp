@@ -1,14 +1,20 @@
 #pragma once
 #include <type_traits>
 #include <concepts>
+#include <Kokkos_Core.hpp>
+
+using ViewType = Kokkos::View<double*[2], Kokkos::LayoutRight, Kokkos::HostSpace>;
 
 struct Sequential {};
 struct Parallel {};
 
+template<class T>
+concept scalar = std::floating_point<T>;
+
 template<class P>
 concept point2d_like = requires(P p){
-    {p.x} -> std::floating_point;
-    {p.y} -> std::floating_point;
+    {p.x} -> scalar;
+    {p.y} -> scalar;
 };
 
 template<class View>
@@ -28,3 +34,14 @@ concept is_sequential = std::same_as<std::remove_cvref_t<P>, Sequential>;
 
 template<class P>
 concept execution_policy = is_sequential<P> || is_parallel<P>;
+
+template<class E>
+concept environment = requires (E e){
+    e.run_kernel;
+    e.kernel_args;
+
+    e.partitioner;
+    e.partitioner_args;
+};
+
+

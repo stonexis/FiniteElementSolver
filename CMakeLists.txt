@@ -32,11 +32,11 @@ find_package(TBB CONFIG REQUIRED)
 
 set(SRC
     #src/solutions/custom_cuda/
-    src/solutions/custom_pthreads/mesh/pthreads_impl.cpp
+    #src/solutions/custom_pthreads/mesh/pthreads_impl.cpp
     #src/solutions/custom_sequential/
 )
 
-add_executable(${PROJECT_NAME} main.cpp ${SRC})
+add_executable(${PROJECT_NAME} main.cpp) #${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE MKL::MKL TBB::tbb Kokkos::kokkos)
 set_target_properties(${PROJECT_NAME} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
@@ -59,7 +59,10 @@ if (BUILD_TESTING)
     add_executable(fem_tests
             ${SRC}
             tests/test_main.cpp
-            tests/test_utils.cpp
+            tests/test_geometry.cpp
+            tests/test_grid.cpp
+            tests/test_kernels.cpp
+            tests/test_mesh.cpp
     )
 
     target_include_directories(fem_tests
